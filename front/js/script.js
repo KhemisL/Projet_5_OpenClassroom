@@ -7,8 +7,8 @@ async function main(){
     
     for (let i = 0; i < articles.length; i++) {
         displayArticle(articles[i])
+        
     }
-   
 }
 
 //fonction pour récupérer les articles
@@ -29,7 +29,7 @@ function getArticles() {
 function displayArticle(article) {
     const items = document.createElement("section");
     items.classList.add("items");
-    items.innerHTML += `<a id="carte" href="./product.html?id=42">
+    items.innerHTML += `<a id="carte" href="./product.html?id=${article._id}">
     <article>
       <img class="images" src="${article.imageUrl}" alt="${article.altTxt}">
       <h3 class="productName">${article.name}</h3>
@@ -44,4 +44,9 @@ function displayArticle(article) {
 
   console.log(items);
   console.log(containerItems);
+
+  
 }
+
+
+
