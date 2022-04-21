@@ -31,7 +31,7 @@ function displayArticle(article) {
     items.classList.add("items");
     items.innerHTML += `<a id="carte" href="./product.html?id=42">
     <article>
-      <img class="images" src="${article.imageUrl}" alt="Lorem ipsum dolor sit amet, Kanap name1">
+      <img class="images" src="${article.imageUrl}" alt="${article.altTxt}">
       <h3 class="productName">${article.name}</h3>
       <p class="productDescription">${article.description}</p>
     </article>
