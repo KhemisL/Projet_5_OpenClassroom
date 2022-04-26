@@ -11,7 +11,7 @@ async function main(){
     }
 
     getId();
-}
+};
 
 //fonction pour récupérer les articles
 function getArticles() {
@@ -25,7 +25,7 @@ function getArticles() {
         .catch(function(err) {
             alert(err)
         })
-}
+};
 
 //fonction pour afficher les articles
  function displayArticle(article) {
@@ -44,28 +44,14 @@ function getArticles() {
 
   containerItems.appendChild(items)
 
-}
+};
 
 
   function getId() {
 
     const a = document.querySelectorAll("#card")
-    
-    // a.forEach(element => {
-    //     console.log(element)
-    //     element.addEventListener("click", ()=>{
-            
-    //         const id = document.querySelectorAll("#id");
-    //         localStorage.setItem("id", this.value)
-    //     })
-    // });
-
-
     const id = document.querySelectorAll("#id");
     console.log(id.value);
-    
-    
-    
-}
+};
     
 
