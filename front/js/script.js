@@ -9,6 +9,8 @@ async function main(){
         displayArticle(articles[i])
         
     }
+
+    getId();
 }
 
 //fonction pour récupérer les articles
@@ -26,11 +28,12 @@ function getArticles() {
 }
 
 //fonction pour afficher les articles
-function displayArticle(article) {
+ function displayArticle(article) {
     const items = document.createElement("section");
     items.classList.add("items");
-    items.innerHTML += `<a id="carte" href="./product.html?id=${article._id}">
+    items.innerHTML += `<a href="./product.html?id=${article._id}">
     <article>
+        <input type="hidden" value="${article._id}" id="id">
       <img class="images" src="${article.imageUrl}" alt="${article.altTxt}">
       <h3 class="productName">${article.name}</h3>
       <p class="productDescription">${article.description}</p>
@@ -40,13 +43,29 @@ function displayArticle(article) {
   const containerItems = document.querySelector(".content-items");
 
   containerItems.appendChild(items)
-  
 
-  console.log(items);
-  console.log(containerItems);
-
-  
 }
 
 
+  function getId() {
+
+    const a = document.querySelectorAll("#card")
+    
+    // a.forEach(element => {
+    //     console.log(element)
+    //     element.addEventListener("click", ()=>{
+            
+    //         const id = document.querySelectorAll("#id");
+    //         localStorage.setItem("id", this.value)
+    //     })
+    // });
+
+
+    const id = document.querySelectorAll("#id");
+    console.log(id.value);
+    
+    
+    
+}
+    
 
