@@ -51,7 +51,6 @@ function getArticles() {
 
     const a = document.querySelectorAll("#card")
     const id = document.querySelectorAll("#id");
-    console.log(id.value);
 };
     
 
