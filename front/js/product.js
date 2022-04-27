@@ -2,12 +2,12 @@ pageProduct();
 //fonction principale
 async function pageProduct(){
     const productId = getIdProduct();
-    console.log(productId);
+    
     const product = await getProduct(productId);
-    console.log(product);
+    
 
     changeProduct(product);
-    getOption();
+    
 };
 
 //récupérer l'id depuis URL
@@ -48,24 +48,61 @@ function getProduct(id) {
         
        };
 
-       const addCart = document.querySelector("#addToCart")
-       addCart.addEventListener("click", getOption)
+        regroupOptionQuantityAndProduct(product);
    };
 
 
 //récuperer les donnée du formulaire option
 
-function getOption() {
+function getOptionAndQuantity() {
     const idForm = document.querySelector("#colors");
-    const choiceForm = idForm.value
-
-    console.log(choiceForm);
-
+    const choiceForm = idForm.value;
+    const numberForm = document.querySelector("#quantity");
+    const quantity= parseInt(numberForm.value);
     
+    
+    
+
+    const objectOptionQuantity = {
+        option : choiceForm,
+        quantity : quantity
+    }
+    
+     return objectOptionQuantity;
 }
 
-   
+// regrouper les option et quantity dans l'objet product
 
-    
+function regroupOptionQuantityAndProduct(product) {
+    const addCart = document.querySelector("#addToCart")
+       addCart.addEventListener("click", ()=>{
+        
+        
+            const productWithOptionAndQantity = Object.assign(product, getOptionAndQuantity() );
+            addBasket(productWithOptionAndQantity);
+           
+       })
+}
 
+//mettre l'objet dans le local storage et le transformer en json
+
+function saveProduct(product) {
+     localStorage.setItem("product", JSON.stringify(product));
+};
+
+// recuperer l'objet dans le local storage 
+function cartProduct() {
+    let basket =  localStorage.getItem("product");
+    if (basket == null) {
+        return [];
+    }else{
+        return JSON.parse(basket);
+    }
+};
+
+function addBasket(product) {
+    let basket = cartProduct();
+    basket.push(product);
+    saveProduct(basket)
+}
 
