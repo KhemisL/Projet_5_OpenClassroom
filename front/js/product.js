@@ -77,10 +77,11 @@ function regroupOptionQuantityAndProduct(product) {
     const addCart = document.querySelector("#addToCart")
        addCart.addEventListener("click", ()=>{
         
-        
+
             const productWithOptionAndQantity = Object.assign(product, getOptionAndQuantity() );
             addBasket(productWithOptionAndQantity);
-           
+
+            window.location.href = "cart.html";
        })
 }
 
