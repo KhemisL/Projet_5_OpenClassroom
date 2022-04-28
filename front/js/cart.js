@@ -11,7 +11,8 @@ async function mainCart(){
        
     }
     
-    removeItem(productInCart)
+    removeItem(productInCart);
+    displayTotalPriceProduct(productInCart);
 }
 
 //recuperer les éléments du localStorage
@@ -77,8 +78,36 @@ function removeItem(productCart) {
             
         }
 
-           
-        
         
  }
 
+ //avoir le prix total dans le panier
+ function totalPriceBasket(priceProduct) {
+     let productBasket = priceProduct;
+     let price = 0;
+     for (let product of productBasket) {
+         price += product.price
+         
+     }
+     return price
+ }
+//avoir le nombres total d'articles dans le panier
+ function totalItems(numberProduct) {
+    let productBasket = numberProduct;
+    let number = 0;
+    for (let items of productBasket) {
+        number += items.quantity
+        
+    }
+   return number
+}
+
+//afficher le prix et nombre d'articles dans le panier
+
+function displayTotalPriceProduct(totalPriceProduct) {
+    const totalProduct = document.querySelector("#totalQuantity");
+    const totalPrice = document.querySelector("#totalPrice");
+
+    totalPrice.innerHTML = totalPriceBasket(totalPriceProduct);
+    totalProduct.innerHTML = totalItems(totalPriceProduct);
+}
