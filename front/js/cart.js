@@ -13,6 +13,8 @@ async function mainCart(){
     
     removeItem(productInCart);
     displayTotalPriceProduct(productInCart);
+    
+    btnOrder(productInCart);
 }
 
 //recuperer les éléments du localStorage
@@ -86,7 +88,7 @@ function removeItem(productCart) {
      let productBasket = priceProduct;
      let price = 0;
      for (let product of productBasket) {
-         price += product.price
+         price += product.quantity * product.price
          
      }
      return price
@@ -111,3 +113,80 @@ function displayTotalPriceProduct(totalPriceProduct) {
     totalPrice.innerHTML = totalPriceBasket(totalPriceProduct);
     totalProduct.innerHTML = totalItems(totalPriceProduct);
 }
+
+
+//recuperez les données du formulaire
+
+function getFormordered() {
+  const firstName = document.querySelector("#firstName").value;
+  const lastName = document.querySelector("#lastName").value;
+  const address = document.querySelector("#address").value;
+  const city = document.querySelector("#city").value;
+  const email = document.querySelector("#email").value;
+
+  
+  
+  const firstNameError = document.querySelector("#firstNameErrorMsg");
+  const lastNameError = document.querySelector("#lastNameErrorMsg");
+  const addressError = document.querySelector("#addressErrorMsg");
+  const cityError = document.querySelector("#cityErrorMsg");
+  const emailError = document.querySelector("#emailErrorMsg");
+  
+  if (/^[A-Za-z]{3,20}$/.test(firstName)) {
+    
+    console.log("ok");
+    
+    
+  }else{
+    
+    firstNameError.textContent = "Les chiffre et les caractères ne sont pas autorisé"
+    lastNameError.textContent = "erreur"
+    return false
+  }
+
+
+  const valueFormObject = {
+    firstName : firstName,
+    lastName : lastName,
+    address : address,
+    city : city,
+    email : email
+}
+
+return valueFormObject
+
+  
+}
+
+//événement sur le btn commander
+function btnOrder(productOrder) {
+  const order = document.querySelector("#order");
+  order.addEventListener("click",(e)=>{
+     e.preventDefault()
+    
+
+     if (getFormordered()) {
+      const formValueOrder = {
+        form: getFormordered(),
+        product: productOrder
+      }
+  
+      saveOrder(formValueOrder);
+     }else{
+       alert("error")
+     }
+    
+    // window.location.href = "confirmation.html";
+
+    
+  });
+}
+
+function saveOrder(order) {
+  localStorage.setItem("order", JSON.stringify(order))
+}
+
+function cartorder() {
+  return JSON.parse(localStorage.getItem("order"));
+  
+};
