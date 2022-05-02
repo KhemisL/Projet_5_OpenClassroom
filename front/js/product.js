@@ -70,19 +70,40 @@ function getOptionAndQuantity() {
     
      return objectOptionQuantity;
 }
+//verifier le formulaire
+function verifFormOptionColors() {
+    const verifColorForm = document.querySelector("#colors").value;
+    const verifNumberForm = document.querySelector("#colors").value;
+    const verifQuantity = parseInt(verifNumberForm.value);
 
+    if ( verifQuantity >= 1 || verifColorForm != "") {
+    
+        console.log("ok");
+        
+        return true
+      }else{
+        
+        
+        return false
+      }
+}
 // regrouper les option et quantity dans l'objet product
 
 function regroupOptionQuantityAndProduct(product) {
     const addCart = document.querySelector("#addToCart")
        addCart.addEventListener("click", ()=>{
         
-            
+        if (verifFormOptionColors()) {
             const productWithOptionAndQantity = Object.assign(product, getOptionAndQuantity() );
-            addBasket(productWithOptionAndQantity);
-
-            window.location.href = "cart.html";
+            console.log(productWithOptionAndQantity);
+            addBasket(productWithOptionAndQantity) 
+            window.location.href = "cart.html"; 
+        }else{
+             alert("error")
+           }
+          
        })
+       
 }
 
 //mettre l'objet dans le local storage et le transformer en json
@@ -94,7 +115,7 @@ function saveProduct(product) {
 // recuperer l'objet dans le local storage 
 function cartProduct() {
     let basket =  localStorage.getItem("product");
-    if (basket == null) {
+    if (basket === null) {
         return [];
     }else{
         return JSON.parse(basket);

@@ -20,7 +20,7 @@ async function mainCart(){
 //recuperer les éléments du localStorage
 function basketProduct() {
     let basket =  localStorage.getItem("product");
-    if (basket == null) {
+    if (basket === null) {
         return [];
     }else{
         return JSON.parse(basket);
@@ -69,9 +69,15 @@ function removeItem(productCart) {
             deleteBtn[j].addEventListener("click", ()=>{
                 
                 let idSelectDelete = productCart[j]._id;
+                let colorSelectDelete = productCart[j].option;
                 console.log(idSelectDelete);
 
-                 productCart = productCart.filter(el => el._id !== idSelectDelete)
+                //  productCart = productCart.filter(el => el._id !== idSelectDelete)
+                productCart = productCart.filter(function(el){
+                  if (el._id !== idSelectDelete || el.option !== colorSelectDelete) {
+                    return true
+                  }
+                })
                  console.log(productCart);
                  saveProductCart(productCart)
                  
@@ -123,27 +129,52 @@ function getFormordered() {
   const address = document.querySelector("#address").value;
   const city = document.querySelector("#city").value;
   const email = document.querySelector("#email").value;
-
-  
   
   const firstNameError = document.querySelector("#firstNameErrorMsg");
   const lastNameError = document.querySelector("#lastNameErrorMsg");
   const addressError = document.querySelector("#addressErrorMsg");
   const cityError = document.querySelector("#cityErrorMsg");
   const emailError = document.querySelector("#emailErrorMsg");
-  
-  if (/^[A-Za-z]{3,20}$/.test(firstName)) {
-    
-    console.log("ok");
-    
-    
-  }else{
-    
-    firstNameError.textContent = "Les chiffre et les caractères ne sont pas autorisé"
-    lastNameError.textContent = "erreur"
+
+  if (!/^[A-Za-z]{3,20}$/.test(firstName)) {
+    firstNameError.textContent = "Les chiffre et les caractères ne sont pas autorisé, il doit y avoir entre 3 et 20 caractères"
+    return false
+  }else if (!/^[A-Za-z]{3,20}$/.test(lastName)) {
+    lastNameError.textContent = "Les chiffre et les caractères ne sont pas autorisé, il doit y avoir entre 3 et 20 caractères"
+    return false
+  }else if (/^[a-zA-Z0-9\s,'-]*$/.test(address)) {
+    addressError.textContent = "Adresse non valide"
+    return false
+  }else if (!/^[A-Za-z]{3,20}$/.test(city)) {
+    cityError.textContent = "Les chiffre et les caractères ne sont pas autorisé, il doit y avoir entre 3 et 20 caractères"
+    return false
+  }else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+    emailError.textContent = `L'email doit contenir au moins un "@" aisin q'un "."`
     return false
   }
+   
+  
+  // else if (/^[A-Za-z]{3,20}$/.test(lastName) === false){
+    
+  //   lastNameError.textContent = "Les chiffre et les caractères ne sont pas autorisé, il doit y avoir entre 3 et 20 caractères"
+  //   return false
 
+  // }else if (/^[a-zA-Z0-9\s,'-]*$/.test(address) === false){
+    
+  //   addressError.textContent = "erreur"
+  //   return false
+
+  // }else if (/^[A-Za-z]{3,20}$/.test(city) === false){
+    
+  //   cityError.textContent = "Les chiffre et les caractères ne sont pas autorisé, il doit y avoir entre 3 et 20 caractères"
+  //   return false
+  // }else if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email) === false){
+    
+  //   emailError.textContent = "Les chiffre et les caractères ne sont pas autorisé, il doit y avoir entre 3 et 20 caractères"
+  //   return false
+  // }
+
+  
 
   const valueFormObject = {
     firstName : firstName,
@@ -158,27 +189,40 @@ return valueFormObject
   
 }
 
+
+
 //événement sur le btn commander
 function btnOrder(productOrder) {
   const order = document.querySelector("#order");
   order.addEventListener("click",(e)=>{
-     e.preventDefault()
-    
+      
+    e.preventDefault()
 
      if (getFormordered()) {
+      
       const formValueOrder = {
         form: getFormordered(),
         product: productOrder
+        
       }
-  
+      const sendForm = fetch("http://localhost:3000/api/products/order",{
+        method: "POST",
+        body: JSON.stringify(formValueOrder),
+        headers: {
+          "content-Type": "application/json"
+        },
+      })
+      console.log(sendForm);
       saveOrder(formValueOrder);
+      
      }else{
-       alert("error")
+      //  alert("error")
+       
      }
     
-    // window.location.href = "confirmation.html";
-
     
+
+     
   });
 }
 

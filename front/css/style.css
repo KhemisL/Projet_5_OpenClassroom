@@ -33,7 +33,10 @@ h2 {
 	max-width: 1400px;
 	padding: 0 25px;
 }
-
+.content-items{
+	display: flex;
+	flex-wrap: wrap;
+}
 /*Colors*/
 :root {
 	--main-color: #3498db;
@@ -123,16 +126,20 @@ h2 {
 main {
 	background-color: var(--main-color);
 }
-
+.titles{
+	width: 100%;
+}
 /*items*/
 .items {
+	width: 50%;
 	margin-bottom: 135px;
 	display: flex;
 	justify-content: space-around;
 	flex-wrap: wrap;
+	
 }
 .items a {
-	width: 21%;
+	width: 300px;
 	text-decoration: none;
 	color: unset;
 }
