@@ -14,7 +14,7 @@ async function mainCart(){
     removeItem(productInCart);
     displayTotalPriceProduct(productInCart);
     
-    btnOrder(productInCart);
+     btnOrder(productInCart);
 }
 
 //recuperer les éléments du localStorage
@@ -95,8 +95,9 @@ function removeItem(productCart) {
      let price = 0;
      for (let product of productBasket) {
          price += product.quantity * product.price
-         
+         saveProductCart(priceProduct)
      }
+     
      return price
  }
 //avoir le nombres total d'articles dans le panier
@@ -105,8 +106,9 @@ function removeItem(productCart) {
     let number = 0;
     for (let items of productBasket) {
         number += items.quantity
-        
+        saveProductCart(numberProduct)
     }
+    
    return number
 }
 
@@ -118,6 +120,7 @@ function displayTotalPriceProduct(totalPriceProduct) {
 
     totalPrice.innerHTML = totalPriceBasket(totalPriceProduct);
     totalProduct.innerHTML = totalItems(totalPriceProduct);
+    
 }
 
 
@@ -151,31 +154,20 @@ function getFormordered() {
   }else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
     emailError.textContent = `L'email doit contenir au moins un "@" aisin q'un "."`
     return false
+  }else{
+    return true
   }
    
-  
-  // else if (/^[A-Za-z]{3,20}$/.test(lastName) === false){
-    
-  //   lastNameError.textContent = "Les chiffre et les caractères ne sont pas autorisé, il doit y avoir entre 3 et 20 caractères"
-  //   return false
-
-  // }else if (/^[a-zA-Z0-9\s,'-]*$/.test(address) === false){
-    
-  //   addressError.textContent = "erreur"
-  //   return false
-
-  // }else if (/^[A-Za-z]{3,20}$/.test(city) === false){
-    
-  //   cityError.textContent = "Les chiffre et les caractères ne sont pas autorisé, il doit y avoir entre 3 et 20 caractères"
-  //   return false
-  // }else if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email) === false){
-    
-  //   emailError.textContent = "Les chiffre et les caractères ne sont pas autorisé, il doit y avoir entre 3 et 20 caractères"
-  //   return false
-  // }
+ 
 
   
-
+}
+function objectFormAndProduct() {
+  const firstName = document.querySelector("#firstName").value;
+  const lastName = document.querySelector("#lastName").value;
+  const address = document.querySelector("#address").value;
+  const city = document.querySelector("#city").value;
+  const email = document.querySelector("#email").value;
   const valueFormObject = {
     firstName : firstName,
     lastName : lastName,
@@ -185,44 +177,54 @@ function getFormordered() {
 }
 
 return valueFormObject
-
-  
 }
 
 
-
 //événement sur le btn commander
-function btnOrder(productOrder) {
+ function btnOrder(productOrder) {
   const order = document.querySelector("#order");
   order.addEventListener("click",(e)=>{
       
     e.preventDefault()
 
      if (getFormordered()) {
-      
       const formValueOrder = {
-        form: getFormordered(),
+        form: objectFormAndProduct(),
         product: productOrder
         
       }
-      const sendForm = fetch("http://localhost:3000/api/products/order",{
-        method: "POST",
-        body: JSON.stringify(formValueOrder),
-        headers: {
-          "content-Type": "application/json"
-        },
-      })
-      console.log(sendForm);
-      saveOrder(formValueOrder);
+      console.log(JSON.stringify(formValueOrder));
+
+      console.log(formValueOrder);
       
+      saveOrder(formValueOrder);
+  //     const sendForm = fetch("http://localhost:3000/api/products/order"  , {    
+  //     method: "POST",
+  //     body: JSON.stringify(formValueOrder),        
+  //     headers: {            
+  //          "content-type" : "application/json",        
+  //     }        
+  // })      
+
+  // .then(res => {
+  //     return res.json();
+  // }).then((data) => {
+  //     console.log(data);
+  // }).catch((error) =>{
+  //     console.log(error);
+  // })
+  //   console.log(sendForm);
      }else{
-      //  alert("error")
-       
+      
+       return false
      }
     
     
-
      
+     
+    
+     
+    
   });
 }
 

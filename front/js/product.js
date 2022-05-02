@@ -57,15 +57,14 @@ function getProduct(id) {
 function getOptionAndQuantity() {
     const idForm = document.querySelector("#colors");
     const choiceForm = idForm.value;
-    const numberForm = document.querySelector("#quantity");
-    const quantity= parseInt(numberForm.value);
+    
     
     
     
 
     const objectOptionQuantity = {
         option : choiceForm,
-        quantity : quantity
+        
     }
     
      return objectOptionQuantity;
@@ -124,7 +123,15 @@ function cartProduct() {
 
 function addBasket(product) {
     let basket = cartProduct();
-    basket.push(product);
+    let foundProduct = basket.find(p => p._id == product._id && p.option == product.option);
+
+    if (foundProduct != undefined) {
+        foundProduct.quantity++;
+    }else{
+        product.quantity = 1
+        basket.push(product);
+    }
+    
     saveProduct(basket)
 }
 
