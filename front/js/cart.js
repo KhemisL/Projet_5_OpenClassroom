@@ -160,10 +160,7 @@ function getFormordered() {
   }else{
     return true
   }
-   
  
-
-  
 }
 function objectFormAndProduct() {
   const firstName = document.querySelector("#firstName").value;
@@ -191,15 +188,6 @@ let arr =[];
     
   }
   return arr
-//   let productId = prod;
-//   let prodId = []
-//   for (let items of productId) {
-//      prodId.push(items._id)
-//      console.log(prodId);
-//      saveProductCart(prod)
-//      return prodId
-// }
-
 }
 
 //événement sur le btn commander
@@ -233,9 +221,12 @@ let arr =[];
       })      
 
       .then(res => {
+        window.location.href ="confirmation.html"
           return res.json();
+         
       }).then((data) => {
           console.log(data);
+          localStorage.setItem("orderId", data.orderId);
       }).catch((error) =>{
           console.log(error);
       })
@@ -245,7 +236,7 @@ let arr =[];
         return sendForm
      }else{
       
-       return false
+       
      }
     
     
