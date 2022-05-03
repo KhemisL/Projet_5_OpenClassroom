@@ -6,15 +6,18 @@ mainCart();
 async function mainCart(){
     const productInCart = await basketProduct();
     console.log(productInCart);
+    
     for (let i = 0; i < productInCart.length; i++) {
         displayProductBasket(productInCart[i]);
-       
+        
+        
     }
     
     removeItem(productInCart);
     displayTotalPriceProduct(productInCart);
+    btnOrder(productInCart);
     
-     btnOrder(productInCart);
+     
 }
 
 //recuperer les éléments du localStorage
@@ -179,6 +182,25 @@ function objectFormAndProduct() {
 return valueFormObject
 }
 
+//recuperer uniquement id des produit
+function getIdProductPost(prod) {
+let arr =[];
+  for (let i = 0; i < prod.length; i++) {
+    let id = prod[i]._id
+    arr.push(id)
+    
+  }
+  return arr
+//   let productId = prod;
+//   let prodId = []
+//   for (let items of productId) {
+//      prodId.push(items._id)
+//      console.log(prodId);
+//      saveProductCart(prod)
+//      return prodId
+// }
+
+}
 
 //événement sur le btn commander
  function btnOrder(productOrder) {
@@ -186,34 +208,41 @@ return valueFormObject
   order.addEventListener("click",(e)=>{
       
     e.preventDefault()
-
+    
+    
      if (getFormordered()) {
-      const formValueOrder = {
-        form: objectFormAndProduct(),
-        product: productOrder
-        
-      }
-      console.log(JSON.stringify(formValueOrder));
 
-      console.log(formValueOrder);
       
-      saveOrder(formValueOrder);
-  //     const sendForm = fetch("http://localhost:3000/api/products/order"  , {    
-  //     method: "POST",
-  //     body: JSON.stringify(formValueOrder),        
-  //     headers: {            
-  //          "content-type" : "application/json",        
-  //     }        
-  // })      
+      const contact = {
+        contact: objectFormAndProduct(),
+        products: getIdProductPost(productOrder),
+          
+        }
+      console.log(JSON.stringify(contact));
 
-  // .then(res => {
-  //     return res.json();
-  // }).then((data) => {
-  //     console.log(data);
-  // }).catch((error) =>{
-  //     console.log(error);
-  // })
-  //   console.log(sendForm);
+      console.log(contact);
+      
+      
+
+          const sendForm = fetch("http://localhost:3000/api/products/order"  , {    
+          method: "POST",
+          body: JSON.stringify(contact),        
+          headers: {            
+              "content-type" : "application/json",        
+          }        
+      })      
+
+      .then(res => {
+          return res.json();
+      }).then((data) => {
+          console.log(data);
+      }).catch((error) =>{
+          console.log(error);
+      })
+        console.log(sendForm);
+        
+        saveOrder(contact);
+        return sendForm
      }else{
       
        return false
