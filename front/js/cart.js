@@ -9,15 +9,11 @@ async function mainCart(){
     
     for (let i = 0; i < productInCart.length; i++) {
         displayProductBasket(productInCart[i]);
-        
-        
     }
     
     removeItem(productInCart);
     displayTotalPriceProduct(productInCart);
     btnOrder(productInCart);
-    
-     
 }
 
 //recuperer les éléments du localStorage
@@ -59,37 +55,31 @@ function displayProductBasket(productBasket) {
       </div>
     </div>
   </article>`
-
-  
 };
 
+//supprimer un produit
 function removeItem(productCart) {
         const deleteBtn = document.querySelectorAll(".productInCart")
-        console.log(deleteBtn);
-        console.log(productCart);
 
         for (let j = 0; j < deleteBtn.length; j++) {
             deleteBtn[j].addEventListener("click", ()=>{
                 
                 let idSelectDelete = productCart[j]._id;
                 let colorSelectDelete = productCart[j].option;
-                console.log(idSelectDelete);
+                
 
-                //  productCart = productCart.filter(el => el._id !== idSelectDelete)
                 productCart = productCart.filter(function(el){
                   if (el._id !== idSelectDelete || el.option !== colorSelectDelete) {
                     return true
                   }
                 })
-                 console.log(productCart);
+                 
                  saveProductCart(productCart)
                  
                  window.location.href = "cart.html"
             })
             
-        }
-
-        
+        }  
  }
 
  //avoir le prix total dans le panier
@@ -103,12 +93,13 @@ function removeItem(productCart) {
      
      return price
  }
+
 //avoir le nombres total d'articles dans le panier
  function totalItems(numberProduct) {
     let productBasket = numberProduct;
     let number = 0;
     for (let items of productBasket) {
-        number += items.quantity
+        number += parseInt(items.quantity ) 
         saveProductCart(numberProduct)
     }
     
@@ -116,19 +107,16 @@ function removeItem(productCart) {
 }
 
 //afficher le prix et nombre d'articles dans le panier
-
 function displayTotalPriceProduct(totalPriceProduct) {
     const totalProduct = document.querySelector("#totalQuantity");
     const totalPrice = document.querySelector("#totalPrice");
 
     totalPrice.innerHTML = totalPriceBasket(totalPriceProduct);
     totalProduct.innerHTML = totalItems(totalPriceProduct);
-    
 }
 
 
 //recuperez les données du formulaire
-
 function getFormordered() {
   const firstName = document.querySelector("#firstName").value;
   const lastName = document.querySelector("#lastName").value;
@@ -149,7 +137,7 @@ function getFormordered() {
     lastNameError.textContent = "Les chiffre et les caractères ne sont pas autorisé, il doit y avoir entre 3 et 20 caractères"
     return false
   }else if (/^[a-zA-Z0-9\s,'-]*$/.test(address)) {
-    addressError.textContent = "Adresse non valide"
+    addressError.textContent = "Veuillez remplir ce champ"
     return false
   }else if (!/^[A-Za-z]{3,20}$/.test(city)) {
     cityError.textContent = "Les chiffre et les caractères ne sont pas autorisé, il doit y avoir entre 3 et 20 caractères"
@@ -160,8 +148,9 @@ function getFormordered() {
   }else{
     return true
   }
- 
 }
+
+//création obj données formulaire
 function objectFormAndProduct() {
   const firstName = document.querySelector("#firstName").value;
   const lastName = document.querySelector("#lastName").value;
@@ -179,7 +168,7 @@ function objectFormAndProduct() {
 return valueFormObject
 }
 
-//recuperer uniquement id des produit
+//recuperer uniquement id des produits
 function getIdProductPost(prod) {
 let arr =[];
   for (let i = 0; i < prod.length; i++) {
@@ -196,21 +185,13 @@ let arr =[];
   order.addEventListener("click",(e)=>{
       
     e.preventDefault()
-    
-    
-     if (getFormordered()) {
 
-      
+     if (getFormordered()) {
       const contact = {
         contact: objectFormAndProduct(),
         products: getIdProductPost(productOrder),
           
         }
-      console.log(JSON.stringify(contact));
-
-      console.log(contact);
-      
-      
 
           const sendForm = fetch("http://localhost:3000/api/products/order"  , {    
           method: "POST",
@@ -220,31 +201,19 @@ let arr =[];
           }        
       })      
 
-      .then(res => {
-        window.location.href ="confirmation.html"
-          return res.json();
-         
-      }).then((data) => {
-          console.log(data);
-          localStorage.setItem("orderId", data.orderId);
-      }).catch((error) =>{
-          console.log(error);
-      })
-        console.log(sendForm);
-        
+          .then(res => {
+            window.location.href ="confirmation.html"
+              return res.json();
+            
+          }).then((data) => {
+              console.log(data);
+              localStorage.setItem("orderId", data.orderId);
+          }).catch((error) =>{
+              console.log(error);
+          })
         saveOrder(contact);
         return sendForm
-     }else{
-      
-       
      }
-    
-    
-     
-     
-    
-     
-    
   });
 }
 

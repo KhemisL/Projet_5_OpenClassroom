@@ -10,7 +10,7 @@ async function main(){
         
     }
 
-    getId();
+  
 };
 
 //fonction pour récupérer les articles
@@ -47,10 +47,6 @@ function getArticles() {
 };
 
 
-  function getId() {
-
-    const a = document.querySelectorAll("#card")
-    const id = document.querySelectorAll("#id");
-};
+ 
     
 

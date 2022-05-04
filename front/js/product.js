@@ -2,12 +2,8 @@ pageProduct();
 //fonction principale
 async function pageProduct(){
     const productId = getIdProduct();
-    
     const product = await getProduct(productId);
-    
-
-    changeProduct(product);
-    
+    changeProduct(product);   
 };
 
 //récupérer l'id depuis URL
@@ -33,8 +29,6 @@ function getProduct(id) {
 };
 
 
-
-
 // aficher le donner du produit
    function changeProduct(product) {
        const title = document.querySelector("#title").innerHTML = product.name;
@@ -45,7 +39,6 @@ function getProduct(id) {
        let color =  product.colors
        for (let i = 0; i < color.length; i++) {
         const colorOption = document.querySelector("#colors").innerHTML += `<option value="${product.colors[i]}">${product.colors[i]}</option>`;
-        
        };
 
         regroupOptionQuantityAndProduct(product);
@@ -53,10 +46,10 @@ function getProduct(id) {
 
 
 //récuperer les donnée du formulaire option
-
 function getOptionAndQuantity() {
     const idForm = document.querySelector("#colors");
     const choiceForm = idForm.value;
+    const quantity = document.querySelector("#quantity").value
     
     
     
@@ -64,41 +57,39 @@ function getOptionAndQuantity() {
 
     const objectOptionQuantity = {
         option : choiceForm,
-        
+        quantity : quantity,
     }
     
      return objectOptionQuantity;
 }
+
 //verifier le formulaire
 function verifFormOptionColors() {
     const verifColorForm = document.querySelector("#colors").value;
-    const verifNumberForm = document.querySelector("#colors").value;
-    const verifQuantity = parseInt(verifNumberForm.value);
-
-    if ( verifQuantity >= 1 || verifColorForm != "") {
+    const verifNumberForm = document.querySelector("#quantity").value;
+    const parseNumberForm = parseInt(verifNumberForm)
     
-        console.log("ok");
-        
+    if ( parseNumberForm != 0 && verifColorForm != "") {
+
         return true
       }else{
-        
-        
+          
         return false
       }
 }
-// regrouper les option et quantity dans l'objet product
 
+// regrouper les option et quantity dans l'objet product
 function regroupOptionQuantityAndProduct(product) {
     const addCart = document.querySelector("#addToCart")
        addCart.addEventListener("click", ()=>{
         
         if (verifFormOptionColors()) {
             const productWithOptionAndQantity = Object.assign(product, getOptionAndQuantity() );
-            console.log(productWithOptionAndQantity);
+            
             addBasket(productWithOptionAndQantity) 
             window.location.href = "cart.html"; 
         }else{
-             alert("error")
+             alert("veuillez choisir une couleur et une quantité")
            }
           
        })
@@ -106,7 +97,6 @@ function regroupOptionQuantityAndProduct(product) {
 }
 
 //mettre l'objet dans le local storage et le transformer en json
-
 function saveProduct(product) {
      localStorage.setItem("product", JSON.stringify(product));
 };
@@ -121,14 +111,17 @@ function cartProduct() {
     }
 };
 
+// Ajouter un produit
 function addBasket(product) {
     let basket = cartProduct();
+   
     let foundProduct = basket.find(p => p._id == product._id && p.option == product.option);
 
     if (foundProduct != undefined) {
-        foundProduct.quantity++;
+        
+         foundProduct.quantity++;
     }else{
-        product.quantity = 1
+        
         basket.push(product);
     }
     
