@@ -87,7 +87,7 @@ function regroupOptionQuantityAndProduct(product) {
             const productWithOptionAndQantity = Object.assign(product, getOptionAndQuantity() );
             
             addBasket(productWithOptionAndQantity) 
-            window.location.href = "cart.html"; 
+             window.location.href = "cart.html"; 
         }else{
              alert("veuillez choisir une couleur et une quantité")
            }
@@ -114,12 +114,13 @@ function cartProduct() {
 // Ajouter un produit
 function addBasket(product) {
     let basket = cartProduct();
-   
+    let quantity = document.querySelector("#quantity")
+    
     let foundProduct = basket.find(p => p._id == product._id && p.option == product.option);
 
     if (foundProduct != undefined) {
         
-         foundProduct.quantity++;
+        foundProduct.quantity++;
     }else{
         
         basket.push(product);

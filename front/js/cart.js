@@ -25,6 +25,7 @@ function basketProduct() {
         return JSON.parse(basket);
     }
 };
+//sauvegarder le localstorage
 function saveProductCart(productForCart) {
     localStorage.setItem("product", JSON.stringify(productForCart));
 };
@@ -106,17 +107,41 @@ function removeItem(productCart) {
    return number
 }
 
-//afficher le prix et nombre d'articles dans le panier
+//afficher le prix et nombre d'articles dans le panier au changement de quantité
 function displayTotalPriceProduct(totalPriceProduct) {
     const totalProduct = document.querySelector("#totalQuantity");
     const totalPrice = document.querySelector("#totalPrice");
 
-    totalPrice.innerHTML = totalPriceBasket(totalPriceProduct);
-    totalProduct.innerHTML = totalItems(totalPriceProduct);
+    const btnQuantity = document.querySelectorAll(".itemQuantity")
+    
+    btnQuantity.forEach(element => {
+      element.addEventListener("change", ()=>{
+        console.log(element);
+        
+        for (let i = 0; i < totalPriceProduct.length; i++) {
+           
+
+           totalPriceProduct[i].quantity = element.value 
+          console.log(parseInt(totalPriceProduct[i].quantity) );
+
+          
+          // console.log(totalPriceProduct[i]);
+          
+           totalPrice.innerHTML = totalPriceBasket(totalPriceProduct);
+           totalProduct.innerHTML = totalItems(totalPriceProduct);
+            totalPriceProduct[i].quantity; 
+        }
+        
+      })
+       totalPrice.innerHTML = totalPriceBasket(totalPriceProduct);
+       totalProduct.innerHTML = totalItems(totalPriceProduct);
+    });
+
+    
 }
 
 
-//recuperez les données du formulaire
+//recuperer les données du formulaire
 function getFormordered() {
   const firstName = document.querySelector("#firstName").value;
   const lastName = document.querySelector("#lastName").value;
