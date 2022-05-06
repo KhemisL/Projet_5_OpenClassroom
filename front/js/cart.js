@@ -121,15 +121,15 @@ function displayTotalPriceProduct(totalPriceProduct) {
         for (let i = 0; i < totalPriceProduct.length; i++) {
            
 
-           totalPriceProduct[i].quantity = element.value 
+           
           console.log(parseInt(totalPriceProduct[i].quantity) );
-
           
+         
           // console.log(totalPriceProduct[i]);
-          
+          totalPriceProduct[i].quantity = element.value ;
            totalPrice.innerHTML = totalPriceBasket(totalPriceProduct);
            totalProduct.innerHTML = totalItems(totalPriceProduct);
-            totalPriceProduct[i].quantity; 
+           
         }
         
       })

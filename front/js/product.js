@@ -120,7 +120,7 @@ function addBasket(product) {
 
     if (foundProduct != undefined) {
         
-        foundProduct.quantity++;
+         foundProduct.quantity ++ ;
     }else{
         
         basket.push(product);
