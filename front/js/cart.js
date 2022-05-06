@@ -13,6 +13,7 @@ async function mainCart(){
     
     removeItem(productInCart);
     displayTotalPriceProduct(productInCart);
+    totalPriceAndItem(productInCart)
     btnOrder(productInCart);
 }
 
@@ -112,32 +113,63 @@ function displayTotalPriceProduct(totalPriceProduct) {
     const totalProduct = document.querySelector("#totalQuantity");
     const totalPrice = document.querySelector("#totalPrice");
 
-    const btnQuantity = document.querySelectorAll(".itemQuantity")
+    // const btnQuantity = document.querySelectorAll(".itemQuantity")
     
-    btnQuantity.forEach(element => {
-      element.addEventListener("change", ()=>{
-        console.log(element);
+    // btnQuantity.forEach(element => {
+    //   element.addEventListener("change", ()=>{
+    //     console.log(element);
         
-        for (let i = 0; i < totalPriceProduct.length; i++) {
+    //     for (let i = 0; i < totalPriceProduct.length; i++) {
            
 
            
-          console.log(parseInt(totalPriceProduct[i].quantity) );
+    //       console.log(parseInt(totalPriceProduct[i].quantity) );
           
-         
-          // console.log(totalPriceProduct[i]);
-          totalPriceProduct[i].quantity = element.value ;
-           totalPrice.innerHTML = totalPriceBasket(totalPriceProduct);
-           totalProduct.innerHTML = totalItems(totalPriceProduct);
-           
-        }
+    //       totalPriceProduct[i].quantity
+    //       console.log(totalPriceProduct[i]);
+          
+    //        totalPrice.innerHTML = totalPriceBasket(totalPriceProduct);
+    //        totalProduct.innerHTML = totalItems(totalPriceProduct);
+    //        totalPriceProduct[i].quantity = element.value ;
+    //     }
         
-      })
-       totalPrice.innerHTML = totalPriceBasket(totalPriceProduct);
-       totalProduct.innerHTML = totalItems(totalPriceProduct);
-    });
-
+    //   })
+       
+   // });
+    totalPrice.innerHTML = totalPriceBasket(totalPriceProduct);
+    totalProduct.innerHTML = totalItems(totalPriceProduct);
     
+}
+
+function totalPriceAndItem(prod) {
+let btn = document.querySelectorAll(".itemQuantity")
+const totalProduct = document.querySelector("#totalQuantity");
+    const totalPrice = document.querySelector("#totalPrice");
+  for (let i = 0; i < prod.length; i++) {
+    btn[i].addEventListener("change", ()=>{
+      prod[i].quantity = parseInt(btn[i].value) 
+      console.log(prod[i].quantity);
+      totalPrice.innerHTML = totalPriceBasket(prod);
+    totalProduct.innerHTML = totalItems(prod);
+    })
+    
+    
+    
+  }
+  // const btnQuantity = document.querySelectorAll(".itemQuantity")
+
+  // btnQuantity.forEach(element => {
+  //   console.log(element);
+  //   element.addEventListener("click", ()=>{
+  //     console.log(prod);
+  //     for (let i = 0; i < prod.length; i++) {
+        
+        
+  //     }
+      
+  //   })
+  // });
+  
 }
 
 

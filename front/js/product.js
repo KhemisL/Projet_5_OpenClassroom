@@ -57,7 +57,7 @@ function getOptionAndQuantity() {
 
     const objectOptionQuantity = {
         option : choiceForm,
-        quantity : quantity,
+        quantity : parseInt(quantity) ,
     }
     
      return objectOptionQuantity;
