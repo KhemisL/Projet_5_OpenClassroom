@@ -12,8 +12,10 @@ async function mainCart(){
    
     for (let i = 0; i < productInCart.length; i++) {
       const prodCart = await getArticlesCart(productInCart[i]._id)
-        displayProductBasket(productInCart[i],prodCart);
-        console.log(prodCart);
+
+      productInCart[i].price = prodCart.price;
+        displayProductBasket(productInCart[i]);
+        
         
         
     }
@@ -61,7 +63,7 @@ function saveProductCart(productForCart) {
 };
 //afficher les élément du panier depuis le localStorage
 
-function displayProductBasket(productBasket, productPrice) {
+function displayProductBasket(productBasket) {
     const sectionItems = document.querySelector("#cart__items");
     console.log(sectionItems);
 
@@ -73,7 +75,7 @@ function displayProductBasket(productBasket, productPrice) {
       <div class="cart__item__content__description">
         <h2>${productBasket.name}</h2>
         <p>${productBasket.option}</p>
-        <p>${productPrice.price}€</p>
+        <p>${productBasket.price}€</p>
       </div>
       <div class="cart__item__content__settings">
         <div class="cart__item__content__settings__quantity">
@@ -114,23 +116,23 @@ function removeItem(productCart) {
  }
 
  //avoir le prix total dans le panier
- async function totalPriceBasket(priceProduct) {
+function totalPriceBasket(priceProduct) {
      let productBasket = priceProduct;
      let price = 0;
 
-     for (let i = 0; i < productBasket.length; i++) {
+    //  for (let i = 0; i < productBasket.length; i++) {
        
-       const prodCart =  await getArticlesCart(priceProduct[i]._id)
-       console.log(prodCart.price);
+    //    const prodCart =   getArticlesCart(priceProduct[i]._id)
+    //    console.log(prodCart.price);
 
-       price += productBasket[i].quantity * prodCart.price
-     }
-    console.log("-------------------");
-     console.log(price);
-    //  for (let product of productBasket) {
-    //      price += product.quantity * product.price
-    //      saveProductCart(priceProduct)
+    //    price += productBasket[i].quantity * prodCart.price
     //  }
+    // console.log("-------------------");
+    //  console.log(price);
+     for (let product of productBasket) {
+         price += product.quantity * product.price
+         saveProductCart(priceProduct)
+     }
      
      return price
  }
@@ -148,12 +150,12 @@ function removeItem(productCart) {
 }
 
 //afficher le prix et nombre d'articles dans le panier au changement de quantité
- async function displayTotalPriceProduct(totalPriceProduct) {
+ function displayTotalPriceProduct(totalPriceProduct) {
     const totalProduct = document.querySelector("#totalQuantity");
     const totalPrice = document.querySelector("#totalPrice");
 
     
-    totalPrice.innerHTML =   await totalPriceBasket(totalPriceProduct);
+    totalPrice.innerHTML =    totalPriceBasket(totalPriceProduct);
     totalProduct.innerHTML = totalItems(totalPriceProduct);
     
 }
@@ -169,8 +171,6 @@ function removeItem(productCart) {
           prod[i].quantity = parseInt(btn[i].value) 
           console.log(prod[i].quantity);
           totalPrice.innerHTML =   totalPriceBasket(prod);
-          console.log("******************");
-          console.log(totalPrice.innerHTML);
           totalProduct.innerHTML = totalItems(prod);
       })
       
