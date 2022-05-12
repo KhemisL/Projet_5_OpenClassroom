@@ -6,24 +6,44 @@ mainCart();
 async function mainCart(){
     const productInCart = await basketProduct();
     
+    
     console.log(productInCart);
+    
    
     for (let i = 0; i < productInCart.length; i++) {
-        displayProductBasket(productInCart[i]);
+      const prodCart = await getArticlesCart(productInCart[i]._id)
+        displayProductBasket(productInCart[i],prodCart);
+        console.log(prodCart);
+        
         
     }
-    
 
-   
+      displayTotalPriceProduct(productInCart);
+    
+    
+    
     removeItem(productInCart);
-    displayTotalPriceProduct(productInCart);
-    totalPriceAndItem(productInCart)
+    
+  totalPriceAndItem(productInCart)
     btnOrder(productInCart);
 }
 
 
 
-
+ function getArticlesCart(id) {
+  return fetch(`http://localhost:3000/api/products/${id}`)
+      .then(function (httpBody){
+          return httpBody.json()
+      }) 
+      .then(function (articles) {
+          return articles;
+      })
+      .catch(function(err) {
+          alert(err)
+      })
+};
+ 
+//redefinir tous les prix 
  
 //recuperer les éléments du localStorage
 function basketProduct() {
@@ -41,7 +61,7 @@ function saveProductCart(productForCart) {
 };
 //afficher les élément du panier depuis le localStorage
 
-function displayProductBasket(productBasket) {
+function displayProductBasket(productBasket, productPrice) {
     const sectionItems = document.querySelector("#cart__items");
     console.log(sectionItems);
 
@@ -53,7 +73,7 @@ function displayProductBasket(productBasket) {
       <div class="cart__item__content__description">
         <h2>${productBasket.name}</h2>
         <p>${productBasket.option}</p>
-        <p>${productBasket.price}€</p>
+        <p>${productPrice.price}€</p>
       </div>
       <div class="cart__item__content__settings">
         <div class="cart__item__content__settings__quantity">
@@ -94,13 +114,23 @@ function removeItem(productCart) {
  }
 
  //avoir le prix total dans le panier
- function totalPriceBasket(priceProduct) {
+ async function totalPriceBasket(priceProduct) {
      let productBasket = priceProduct;
      let price = 0;
-     for (let product of productBasket) {
-         price += product.quantity * product.price
-         saveProductCart(priceProduct)
+
+     for (let i = 0; i < productBasket.length; i++) {
+       
+       const prodCart =  await getArticlesCart(priceProduct[i]._id)
+       console.log(prodCart.price);
+
+       price += productBasket[i].quantity * prodCart.price
      }
+    console.log("-------------------");
+     console.log(price);
+    //  for (let product of productBasket) {
+    //      price += product.quantity * product.price
+    //      saveProductCart(priceProduct)
+    //  }
      
      return price
  }
@@ -118,31 +148,35 @@ function removeItem(productCart) {
 }
 
 //afficher le prix et nombre d'articles dans le panier au changement de quantité
-function displayTotalPriceProduct(totalPriceProduct) {
+ async function displayTotalPriceProduct(totalPriceProduct) {
     const totalProduct = document.querySelector("#totalQuantity");
     const totalPrice = document.querySelector("#totalPrice");
 
     
-    totalPrice.innerHTML = totalPriceBasket(totalPriceProduct);
+    totalPrice.innerHTML =   await totalPriceBasket(totalPriceProduct);
     totalProduct.innerHTML = totalItems(totalPriceProduct);
     
 }
 
-function totalPriceAndItem(prod) {
-let btn = document.querySelectorAll(".itemQuantity")
-const totalProduct = document.querySelector("#totalQuantity");
-    const totalPrice = document.querySelector("#totalPrice");
-  for (let i = 0; i < prod.length; i++) {
-    btn[i].addEventListener("change", ()=>{
-      prod[i].quantity = parseInt(btn[i].value) 
-      console.log(prod[i].quantity);
-      totalPrice.innerHTML = totalPriceBasket(prod);
-    totalProduct.innerHTML = totalItems(prod);
-    })
-    
-    
-    
-  }
+ function totalPriceAndItem(prod) {
+      let btn = document.querySelectorAll(".itemQuantity")
+
+      const totalProduct = document.querySelector("#totalQuantity");
+      const totalPrice = document.querySelector("#totalPrice");
+
+      for (let i = 0; i < prod.length; i++) {
+        btn[i].addEventListener("change", ()=>{
+          prod[i].quantity = parseInt(btn[i].value) 
+          console.log(prod[i].quantity);
+          totalPrice.innerHTML =   totalPriceBasket(prod);
+          console.log("******************");
+          console.log(totalPrice.innerHTML);
+          totalProduct.innerHTML = totalItems(prod);
+      })
+      
+      
+      
+    }
   
 }
 

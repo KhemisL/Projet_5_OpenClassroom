@@ -82,9 +82,9 @@ function verifFormOptionColors() {
         
         if (verifFormOptionColors()) {
             const productWithOptionAndQantity =  Object.assign( product, getOptionAndQuantity() );
-            
+            delete productWithOptionAndQantity.price
              addBasket(productWithOptionAndQantity) 
-             window.location.href = "cart.html"; 
+             window.location.href = `cart.html`; 
         }else{
              alert("veuillez choisir une couleur et une quantité")
            }
