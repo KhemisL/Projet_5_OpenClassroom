@@ -3,7 +3,7 @@ pageProduct();
 async function pageProduct(){
     const productId = getIdProduct();
     const product = await getProduct(productId);
-    changeProduct(product);   
+    await changeProduct(product);   
 };
 
 //récupérer l'id depuis URL
@@ -30,7 +30,7 @@ function getProduct(id) {
 
 
 // aficher le donner du produit
-   function changeProduct(product) {
+   async function changeProduct(product) {
        const title = document.querySelector("#title").innerHTML = product.name;
        const price = document.querySelector("#price").innerHTML = product.price;
        const description = document.querySelector("#description").innerHTML = product.description;
@@ -50,10 +50,7 @@ function getOptionAndQuantity() {
     const idForm = document.querySelector("#colors");
     const choiceForm = idForm.value;
     const quantity = document.querySelector("#quantity").value
-    
-    
-    
-    
+
 
     const objectOptionQuantity = {
         option : choiceForm,
@@ -79,14 +76,14 @@ function verifFormOptionColors() {
 }
 
 // regrouper les option et quantity dans l'objet product
-function regroupOptionQuantityAndProduct(product) {
+ function regroupOptionQuantityAndProduct(product) {
     const addCart = document.querySelector("#addToCart")
        addCart.addEventListener("click", ()=>{
         
         if (verifFormOptionColors()) {
-            const productWithOptionAndQantity = Object.assign(product, getOptionAndQuantity() );
+            const productWithOptionAndQantity =  Object.assign( product, getOptionAndQuantity() );
             
-            addBasket(productWithOptionAndQantity) 
+             addBasket(productWithOptionAndQantity) 
              window.location.href = "cart.html"; 
         }else{
              alert("veuillez choisir une couleur et une quantité")
@@ -97,8 +94,8 @@ function regroupOptionQuantityAndProduct(product) {
 }
 
 //mettre l'objet dans le local storage et le transformer en json
-function saveProduct(product) {
-     localStorage.setItem("product", JSON.stringify(product));
+ function saveProduct(product) {
+      localStorage.setItem("product", JSON.stringify(product));
 };
 
 // recuperer l'objet dans le local storage 
@@ -112,7 +109,7 @@ function cartProduct() {
 };
 
 // Ajouter un produit
-function addBasket(product) {
+ function addBasket(product) {
     let basket = cartProduct();
     let quantity = document.querySelector("#quantity")
     
@@ -126,6 +123,6 @@ function addBasket(product) {
         basket.push(product);
     }
     
-    saveProduct(basket)
+     saveProduct(basket)
 }
 

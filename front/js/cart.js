@@ -5,21 +5,30 @@ mainCart();
 //fonction global panier
 async function mainCart(){
     const productInCart = await basketProduct();
-    console.log(productInCart);
     
+    console.log(productInCart);
+   
     for (let i = 0; i < productInCart.length; i++) {
         displayProductBasket(productInCart[i]);
+        
     }
     
+
+   
     removeItem(productInCart);
     displayTotalPriceProduct(productInCart);
     totalPriceAndItem(productInCart)
     btnOrder(productInCart);
 }
 
+
+
+
+ 
 //recuperer les éléments du localStorage
 function basketProduct() {
     let basket =  localStorage.getItem("product");
+    
     if (basket === null) {
         return [];
     }else{
@@ -113,29 +122,7 @@ function displayTotalPriceProduct(totalPriceProduct) {
     const totalProduct = document.querySelector("#totalQuantity");
     const totalPrice = document.querySelector("#totalPrice");
 
-    // const btnQuantity = document.querySelectorAll(".itemQuantity")
     
-    // btnQuantity.forEach(element => {
-    //   element.addEventListener("change", ()=>{
-    //     console.log(element);
-        
-    //     for (let i = 0; i < totalPriceProduct.length; i++) {
-           
-
-           
-    //       console.log(parseInt(totalPriceProduct[i].quantity) );
-          
-    //       totalPriceProduct[i].quantity
-    //       console.log(totalPriceProduct[i]);
-          
-    //        totalPrice.innerHTML = totalPriceBasket(totalPriceProduct);
-    //        totalProduct.innerHTML = totalItems(totalPriceProduct);
-    //        totalPriceProduct[i].quantity = element.value ;
-    //     }
-        
-    //   })
-       
-   // });
     totalPrice.innerHTML = totalPriceBasket(totalPriceProduct);
     totalProduct.innerHTML = totalItems(totalPriceProduct);
     
@@ -156,19 +143,6 @@ const totalProduct = document.querySelector("#totalQuantity");
     
     
   }
-  // const btnQuantity = document.querySelectorAll(".itemQuantity")
-
-  // btnQuantity.forEach(element => {
-  //   console.log(element);
-  //   element.addEventListener("click", ()=>{
-  //     console.log(prod);
-  //     for (let i = 0; i < prod.length; i++) {
-        
-        
-  //     }
-      
-  //   })
-  // });
   
 }
 
@@ -193,7 +167,7 @@ function getFormordered() {
   }else if (!/^[A-Za-z]{3,20}$/.test(lastName)) {
     lastNameError.textContent = "Les chiffre et les caractères ne sont pas autorisé, il doit y avoir entre 3 et 20 caractères"
     return false
-  }else if (/^[a-zA-Z0-9\s,'-]$/.test(address)) {
+  }else if (/^[a-zA-Z0-9\s,'-]*$/.test(address)) {
     addressError.textContent = "Veuillez remplir ce champ"
     return false
   }else if (!/^[A-Za-z]{3,20}$/.test(city)) {
@@ -259,12 +233,12 @@ let arr =[];
       })      
 
           .then(res => {
-            window.location.href ="confirmation.html"
               return res.json();
             
           }).then((data) => {
               console.log(data);
-              localStorage.setItem("orderId", data.orderId);
+              window.location.href =`confirmation.html?order=${data.orderId}`
+              // localStorage.setItem("orderId", data.orderId);
           }).catch((error) =>{
               console.log(error);
           })
