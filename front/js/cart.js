@@ -201,7 +201,7 @@ function getFormordered() {
   }else if (!/^[A-Za-z]{3,20}$/.test(lastName)) {
     lastNameError.textContent = "Les chiffre et les caractères ne sont pas autorisé, il doit y avoir entre 3 et 20 caractères"
     return false
-  }else if (/^[a-zA-Z0-9\s,'-]*$/.test(address)) {
+  }else if (address == "") {
     addressError.textContent = "Veuillez remplir ce champ"
     return false
   }else if (!/^[A-Za-z]{3,20}$/.test(city)) {
